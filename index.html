@@ -13,106 +13,28 @@
 <script type="text/babel">
     const root = document.getElementById("root");
 
-    function MinutesToHours() {
-        const [amount, setAmount] = React.useState();
-        const [flipped, setFlipped] = React.useState(true);
-        const onChange = (event) => {
-            onClickReset();
-            setAmount(event.target.value);
-        }
-
-        const onClickReset = () => setMinutes(0);
-        const onClickFlip = () => setFlipped((current) => !current);
-
-        return (
-            <div>
-                <h3>Minutes To Hours</h3>
-                <div>
-                    <label htmlFor="minutes">Minutes</label>
-                    <input
-                        onChange={onChange}
-                        value={flipped ? amount : amount * 60}
-                        placeholder="minutes"
-                        id="minutes"
-                        type="number"
-                        disabled={!flipped}/>
-                </div>
-                <div>
-                    <label htmlFor="times">Times</label>
-                    <input
-                        onChange={onChange}
-                        value={flipped ? Math.round(amount / 60) : amount}
-                        placeholder="times"
-                        id="times"
-                        type="number"
-                        disabled={flipped}/>
-                </div>
-                <div>
-                    <button onClick={onClickReset}>Reset</button>
-                    <button onClick={onClickFlip}>Flip</button>
-                </div>
-            </div>
-        );
-    }
-
-    function KmToMiles() {
-        const [amount, setAmount] = React.useState(0);
-        const [flipped, setFlipped] = React.useState(true);
-        const onChange = (event) => {setAmount(event.target.value)}
-        const onClickFlip = () => {
-            setFlipped(!flipped);
-            setAmount(0);
-        }
-        return (
-            <div>
-                <h3>KM 2 Miles</h3>
-                <div>
-                    <label
-                        htmlFor="km">
-                        KM
-                    </label>
-                    <input
-                        type="number"
-                        onChange={onChange}
-                        id="km"
-                        placeholder="km"
-                        value={flipped ? amount : amount * 1.609}
-                        disabled={!flipped}
-
-                    />
-                </div>
-                <div>
-                    <label
-                        htmlFor="mile">
-                        Mile
-                    </label>
-                    <input
-                        type="number"
-                        onChange={onChange}
-                        id="mile"
-                        placeholder="mile"
-                        value={flipped ? amount / 1.609 : amount}
-                        disabled={flipped}
-                    />
-                </div>
-                <button onClick={onClickFlip}>Flip</button>
-            </div>
-        );
+    function Btn({texti, big, onClickEvent}) {
+        return <button
+            onClick={onClickEvent}
+            style={{
+                backgroundColor: "tomato",
+                color: "white",
+                padding: "10px 20px",
+                borderRadius: 10,
+                border: 0,
+                fontSize: big ? 18 : 10,
+            }}>{texti}</button>;
     }
 
     function App() {
-        const [index, setIndex] = React.useState("0");
-        const onSelect = (event) => {
-            setIndex(event.target.value);
-        }
+        const [value, setValue] = React.useState("Save Changes");
+        const changeValue = () => setValue("Revert Changes");
+
+        const MemorizedBtn = React.memo(Btn);
         return (
             <div>
-                <h1>Converter</h1>
-                <select value={index} onChange={onSelect}>
-                    <option value="0">Minutes & Hours</option>
-                    <option value="1">Km & Miles</option>
-                </select>
-                {index === "0" ? <MinutesToHours/> : <KmToMiles/>}
+                <MemorizedBtn texti={value} big={true} onClickEvent={changeValue}/>
+                <MemorizedBtn texti="Confirm"/>
             </div>
         );
     }
